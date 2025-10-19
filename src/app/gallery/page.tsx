@@ -1,8 +1,14 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import "react-image-lightbox/style.css";
-import Lightbox from "react-image-lightbox";
+// @ts-ignore: allow importing stylesheet without type declarations
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+
 import { galleryItems } from "@/data/data";
 import Topsection from "@/Components/TopSection";
 
@@ -19,6 +25,13 @@ const GalleryPage = () => {
             </div>
         );
     }
+
+    const slides = galleryItems
+        .filter(item => item.type !== "video")
+        .map(item => ({
+            src: item.src,
+            description: item.caption,
+        }));
 
     return (
         <>
@@ -87,17 +100,11 @@ const GalleryPage = () => {
                     {/* Lightbox */}
                     {isOpen && (
                         <Lightbox
-                            mainSrc={galleryItems[photoIndex].src}
-                            nextSrc={galleryItems[(photoIndex + 1) % galleryItems.length].src}
-                            prevSrc={galleryItems[(photoIndex + galleryItems.length - 1) % galleryItems.length].src}
-                            onCloseRequest={() => setIsOpen(false)}
-                            onMovePrevRequest={() =>
-                                setPhotoIndex((photoIndex + galleryItems.length - 1) % galleryItems.length)
-                            }
-                            onMoveNextRequest={() =>
-                                setPhotoIndex((photoIndex + 1) % galleryItems.length)
-                            }
-                            imageCaption={galleryItems[photoIndex].caption}
+                            open={isOpen}
+                            close={() => setIsOpen(false)}
+                            index={photoIndex}
+                            slides={slides}
+                            plugins={[Captions, Zoom, Fullscreen]}
                         />
                     )}
                 </div>
