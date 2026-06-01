@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
-import Footer from "@/Components/Footer";
-import Navbar from "@/Components/Navbar";
+import AppWrapper from "@/Components/AppWrapper";
 import Script from "next/script";
 import NewNavbar from "@/Components/NewNavbar";
 
@@ -37,11 +36,10 @@ export default function RootLayout({
         <link href="/css/mousecursor.css" rel="stylesheet" />
         <link href="/css/custom.css" rel="stylesheet" />
       </head>
-      <body
-      >
-        <Navbar />
-        {children}
-        <Footer />
+      <body>
+        <AppWrapper>
+          {children}
+        </AppWrapper>
 
         <Script src="/js/jquery-3.7.1.min.js" strategy="beforeInteractive" />
         <Script src="/js/bootstrap.min.js" strategy="afterInteractive" />
